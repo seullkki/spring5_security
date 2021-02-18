@@ -6,12 +6,33 @@
       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     
    <http> 
-      <form-login />
+   	  <intercept-url pattern="/security/all" access="permitAll" />
+      <intercept-url pattern="/security/member" access="hasRole('ROLE_MEMBER')" />   
+       <intercept-url pattern="/security/admin" access="hasRole('ROLE_ADMIN')" />   
+      
+      <!-- 로그인 페이지 커스텀화 하기 -->
+      <form-login login-page="/login/loginForm"
+      			  default-target-url="/"
+                  authentication-failure-url="/login/loginForm?error"
+                  username-parameter="id"
+                  password-parameter="password"
+      />
+      
+      <logout logout-url="/logout" logout-success-url="/" />
+      
+      <!-- 403 에러 처리 -->
+      <access-denied-handler error-page="/security/accessError" />
+      
    </http> 
    
    <!-- provider --> 
    <authentication-manager>
-
+		<authentication-provider>
+			<user-service>	
+				<user name="manager" password="{noop}manager" authorities="ROLE_MEMBER" />
+				<user name="admin" password="{noop}admin" authorities="ROLE_MEMBER, ROLE_ADMIN" />
+			</user-service>
+		</authentication-provider>
    </authentication-manager>
     
 </beans:beans>
