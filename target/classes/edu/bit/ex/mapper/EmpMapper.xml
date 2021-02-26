@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.bit.ex.mapper.EmpMapper">
+
+	<resultMap id="empMap" type="edu.bit.ex.vo.EmpVO">
+	    <result property="eName" column="ename"/>
+	    <result property="empNo" column="empno"/>
+	    <result property="job" column="job"/>
+	    <result property="mgr" column="mgr"/>
+	    <result property="hiredate" column="hiredate"/>
+	    <result property="sal" column="sal"/>
+	    <result property="comm" column="comm"/>
+	    <result property="deptNo" column="deptNo"/>
+	    <!-- <result property="enabled" column="enabled"/> -->					<!-- enabled는 어떻게 처리? -->
+		<collection property="authList" resultMap="authMap"></collection>
+	</resultMap>
+	
+	<resultMap id="authMap" type="edu.bit.ex.vo.AuthVO">
+		<result property="username" column="username"/>
+		<result property="authority" column="authority"/>
+	</resultMap>
+	
+<!-- 	<select id="getEmp" resultMap="empMap">
+		select distinct e.ename, e.empno, e.job, e.ename as username, case when e.job = 'MANAGER' then 'ROLE_ADMIN' else 'ROLE_USER' end as authority, e.empno as password, e.mgr, e.hiredate, e.sal, nvl(e.comm, 0), e.deptno from authorities, emp03 e where e.ename = #{username}
+	</select> -->
+	
+	<select id="getEmp" resultMap="empMap">
+		select distinct e.ename as username, case when e.job = 'MANAGER' then 'ROLE_ADMIN' else 'ROLE_USER' end as authority, e.empno as password, e.empno, e.ename, e.job, e.mgr, e.hiredate, e.sal, nvl(e.comm, 0), e.deptno from authorities, emp03 e where e.ename = #{username}
+	</select> 
+
+</mapper>

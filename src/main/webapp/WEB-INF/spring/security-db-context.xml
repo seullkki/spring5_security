@@ -99,13 +99,13 @@
          />  -->
          
          
-          <jdbc-user-service 
+<!--           <jdbc-user-service 
                data-source-ref="dataSource"
 			   role-prefix=""
                users-by-username-query="select distinct e.ename as username, e.empno as password, enabled, e.job as authority from users , emp03 e where e.ename= ?"
                authorities-by-username-query="select distinct e.ename as username, case when e.job = 'MANAGER' then 'ROLE_ADMIN' else 'ROLE_USER' end as authority from authorities, emp03 e where e.ename = ?"
          />   
- 
+  -->
  
 
       </authentication-provider>
